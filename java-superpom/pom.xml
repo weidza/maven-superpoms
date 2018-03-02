@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- ==================================================================== 
+    = MAVEN
+    ====================================================================== -->
+    <prerequisites>
+        <maven>3.5</maven>
+    </prerequisites>
+
+
+
+    <!-- =====================================================================
+    = PARENT
+    ====================================================================== -->
+    <parent>
+        <groupId>org.wiedza.maven</groupId>
+        <artifactId>maven-superpoms</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+
+    <!-- ==================================================================== 
+    = PROJECT
+    ====================================================================== -->
+    <artifactId>java-superpom</artifactId>
+    <packaging>pom</packaging>
+  
+  
+    <!-- =====================================================================
+    = PROPERTIES
+    ====================================================================== -->
+    <properties>
+        <!--[ FACETS ]+++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+        <super.javadoc.enable>false</super.javadoc.enable>
+        <super.jdk>1.8</super.jdk>
+    
+        <!--[ JAVA EE ]++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+        <javax.javaee-api.version>8.0</javax.javaee-api.version>
+        <javax.cdi-api.version>2.0</javax.cdi-api.version>
+        <javax.servlet.version>3.0.1</javax.servlet.version>
+        <org.jboss.resteasy.version>4.0.0.Beta2</org.jboss.resteasy.version>
+        <org.jboss.weld.version>3.0.3.Final</org.jboss.weld.version>        
+        
+        
+        <!--[ LOGGER ]+++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+        <org.slf4j.version>1.7.25</org.slf4j.version>
+        <ch.qos.logback.version>1.2.3</ch.qos.logback.version>
+        
+        <!--[ Others ]+++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+        <org.tuckey.urlrewritefilter.version>4.0.4</org.tuckey.urlrewritefilter.version>
+        
+        <!--[ Plugins ]++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+        <plugins.org-apache-maven-plugins.maven-failsafe-plugin>2.20.1</plugins.org-apache-maven-plugins.maven-failsafe-plugin>
+        <plugins.org-apache-maven-plugins.maven-surefire-plugin>2.20.1</plugins.org-apache-maven-plugins.maven-surefire-plugin>
+        <plugins.org-apache-maven-plugins.maven-source-plugin>3.0.1</plugins.org-apache-maven-plugins.maven-source-plugin>
+        <plugins.org-apache-maven-plugins.maven-jar-plugin>3.0.2</plugins.org-apache-maven-plugins.maven-jar-plugin>
+        <plugins.org-apache-maven-plugins.maven-javadoc-plugin>1.9</plugins.org-apache-maven-plugins.maven-javadoc-plugin>
+        <plugins.org-apache-maven-plugins.maven-compiler-plugin>3.7.0</plugins.org-apache-maven-plugins.maven-compiler-plugin>
+    </properties>
+        
+  
+  
+    <!-- =====================================================================
+    = DEPENDENCY MANAGEMENT
+    ====================================================================== -->
+    <dependencyManagement>
+        <dependencies>
+
+            <!--[ JavaEE ]+++++++++++++++++++++++++++++++++++++++++++++++++-->
+            <dependency>
+                <groupId>javax.enterprise</groupId>
+                <artifactId>cdi-api</artifactId>
+                <version>${javax.cdi-api.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax</groupId>
+                <artifactId>javaee-api</artifactId>
+                <version>${javax.javaee-api.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jboss.resteasy</groupId>
+                <artifactId>resteasy-jaxrs-all</artifactId>
+                <version>${org.jboss.resteasy.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jboss.weld</groupId>
+                <artifactId>weld-core-bom</artifactId>
+                <version>${org.jboss.weld.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        
+            <!--[ LOGGER ]+++++++++++++++++++++++++++++++++++++++++++++++++-->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${org.slf4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${ch.qos.logback.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>    
+    
+    
+    
+    <!-- =====================================================================
+    = BUILD
+    ====================================================================== -->
+    <build>
+        <!--[ pluginManagement ]+++++++++++++++++++++++++++++++++++++++++++-->
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${plugins.org-apache-maven-plugins.maven-compiler-plugin}</version>
+                    <configuration>
+                        <source>${super.jdk}</source>
+                        <target>${super.jdk}</target>
+                        <encoding>${project.build.sourceEncoding}</encoding>
+                        <optimize>true</optimize>
+                        <showWarnings>true</showWarnings>
+                        <showDeprecation>true</showDeprecation>
+                        <compilerArgs>
+                            <arg>-verbose</arg>
+                        </compilerArgs>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>${plugins.org-apache-maven-plugins.maven-javadoc-plugin}</version>
+                    <configuration>
+                        <source>${super.jdk}</source>
+                        <target>${super.jdk}</target>
+                        <javadocVersion>${super.jdk}</javadocVersion>
+                        <quiet>true</quiet>
+                        <charset>${project.build.sourceEncoding}</charset>
+                        <encoding>${project.build.sourceEncoding}</encoding>
+                        <docencoding>${project.build.sourceEncoding}</docencoding>
+                        <additionalJOption>-J-Xmx512m</additionalJOption>
+                        <author>false</author>
+                        <additionalparam>-Xdoclint:none</additionalparam>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${plugins.org-apache-maven-plugins.maven-jar-plugin}</version>
+                    <configuration>
+                        <archive>
+                            <manifest>
+                                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                                <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                                <addClasspath>true</addClasspath>
+                                <classpathLayoutType>repository</classpathLayoutType>
+                            </manifest>
+
+                            <manifestEntries>
+                                <Implementation-Group>${project.groupId}</Implementation-Group>
+                                <Implementation-Module>${project.artifactId}</Implementation-Module>
+                                <Implementation-Encoding>${project.build.sourceEncoding}</Implementation-Encoding>
+                               
+                                <!-- Source info generated by git-commit-id-plugin -->
+                                <Implementation-Sources-Tags>${git.tags}</Implementation-Sources-Tags>
+                                <Implementation-Sources-Commit-Id>${git.commit.id}</Implementation-Sources-Commit-Id>
+                                <Implementation-Sources-Commit-Date>${git.commit.time}</Implementation-Sources-Commit-Date>
+                                <Implementation-Sources-Commit-Author>${git.commit.user.name} (${git.commit.user.email})</Implementation-Sources-Commit-Author>
+                                <Implementation-Sources-Commit-Message>${git.commit.message.short}</Implementation-Sources-Commit-Message>
+                                <Implementation-Sources-Branch>${git.branch}</Implementation-Sources-Branch>
+                                <Implementation-Sources-Describe>${git.commit.id.describe-short}</Implementation-Sources-Describe>
+
+                                <Built-On-OS>${os.name} (${os.version} / ${os.arch})</Built-On-OS>
+                                <Built-On-Host>${git.build.host}</Built-On-Host>
+                                <Build-Jdk-Details>${jdk}(${java.vendor})</Build-Jdk-Details>
+                                <Build-Job-Name>${env.BUILD_TAG}(${env.BUILD_URL})</Build-Job-Name>
+                                <Build-Job-Date>${env.BUILD_ID}</Build-Job-Date>
+                                <Build-Job-Node>${env.NODE_NAME}</Build-Job-Node>
+                                <Build-Job-User>${env.BUILD_USER_ID}</Build-Job-User>
+                                
+                             <!-- Timestamp generated by buildnumber-maven-plugin -->
+                                <Build-Date>${timestamp}</Build-Date>
+                            </manifestEntries>
+                        </archive>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <!--[ plugin ]+++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+        <plugins>
+            <plugin>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <phase>${super.javadoc.enable}package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${plugins.org-apache-maven-plugins.maven-source-plugin}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>${environment.ci}package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${plugins.org-apache-maven-plugins.maven-surefire-plugin}</version>
+                <configuration>
+                    <excludes>
+                        <exclude>**/*IT.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>${plugins.org-apache-maven-plugins.maven-failsafe-plugin}</version>
+                <executions>
+                    <execution>
+                        <phase>integration-test</phase>
+                        <goals>
+                            <goal>integration-test</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <includes>
+                        <include>**/*IT.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>
